@@ -1,0 +1,23 @@
+<h1><%= @breed.name %></h1>
+<p>Sub-breeds: <%= @breed.sub_breeds %></p>
+
+<h2>Images</h2>
+<ul>
+  <% @breed.breed_images.each do |image| %>
+    <li><%= image_tag image.image_url %></li>
+  <% end %>
+</ul>
+
+<h2>Facts</h2>
+<ul>
+  <% @breed.breed_facts.each do |fact| %>
+    <li><%= fact.fact %></li>
+  <% end %>
+</ul>
+
+<h2>Participating Dog Shows</h2>
+<ul>
+  <% @breed.dog_shows.each do |show| %>
+    <li><%= link_to show.name, dog_show_path(show) %></li>
+  <% end %>
+</ul>
