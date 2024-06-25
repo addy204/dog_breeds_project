@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_25_013559) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_25_180903) do
+  create_table "breed_dog_shows", force: :cascade do |t|
+    t.integer "breed_id", null: false
+    t.integer "dog_show_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["breed_id"], name: "index_breed_dog_shows_on_breed_id"
+    t.index ["dog_show_id"], name: "index_breed_dog_shows_on_dog_show_id"
+  end
+
   create_table "breed_facts", force: :cascade do |t|
     t.integer "breed_id", null: false
     t.text "fact"
@@ -32,8 +41,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_013559) do
     t.text "sub_breeds"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "owner_id"
+    t.index ["owner_id"], name: "index_breeds_on_owner_id"
   end
 
+  create_table "dog_shows", force: :cascade do |t|
+    t.string "name"
+    t.date "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "owners", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "breed_dog_shows", "breeds"
+  add_foreign_key "breed_dog_shows", "dog_shows"
   add_foreign_key "breed_facts", "breeds"
   add_foreign_key "breed_images", "breeds"
+  add_foreign_key "breeds", "owners"
 end
