@@ -4,4 +4,6 @@ class Breed < ApplicationRecord
   has_many :breed_facts
   has_many :breed_dog_shows
   has_many :dog_shows, through: :breed_dog_shows
+
+  validates :name, presence: true, uniqueness: true
 end
