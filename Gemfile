@@ -69,3 +69,6 @@ group :test do
   gem "selenium-webdriver"
 
 end
+group :development, :test do
+  gem 'html-proofer', '~> 3.19'
+end
