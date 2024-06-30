@@ -11,7 +11,7 @@
 
 <h2>Facts</h2>
 <ul>
-  <% @breed.breed_facts.each do |fact| %>
+  <% @breed.breed_facts.uniq.each do |fact| %>
     <li><%= fact.fact %></li>
   <% end %>
 </ul>

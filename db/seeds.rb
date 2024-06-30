@@ -37,10 +37,9 @@ Breed.insert_all(breed_records)
 
 # Fetch Facts for each breed
 Breed.all.each do |breed_record|
-  # Fetch Facts for the Breed (using breed temperament as fact)
   breed_data = breeds_data.find { |b| b['name'] == breed_record.name }
   fact = breed_data['temperament'] || "No temperament information available."
-  BreedFact.create!(breed: breed_record, fact: fact)
+  BreedFact.find_or_create_by!(breed: breed_record, fact: fact)
 end
 
 # Generate Fake Data for Owners and DogShows
@@ -69,7 +68,7 @@ total_rows = Breed.count + BreedFact.count + Owner.count + DogShow.count + Breed
 
 # Populate additional rows if necessary
 if total_rows < 200
-  additional_breeds_needed = (200 - total_rows) / 2
+  additional_breeds_needed = (200 - total_rows) / 3
 
   additional_breeds_needed.times do
     breed = Breed.create!(name: Faker::Creature::Dog.breed)
