@@ -1,17 +1,18 @@
 <h1><%= @breed.name %></h1>
+
 <p><strong>Sub Breeds:</strong> <%= @breed.sub_breeds %></p>
-<p><strong>Owner:</strong> <%= @breed.owner.name if @breed.owner %></p>
+<p><strong>Owner:</strong> <%= link_to @breed.owner.name, owner_path(@breed.owner) %></p>
 
 <h2>Dog Shows</h2>
 <ul>
   <% @breed.dog_shows.each do |show| %>
-    <li><%= show.name %> on <%= show.date %></li>
+    <li><%= link_to "#{show.name} on #{show.date}", dog_show_path(show) %></li>
   <% end %>
 </ul>
 
 <h2>Facts</h2>
 <ul>
-  <% @breed.breed_facts.uniq.each do |fact| %>
+  <% @breed.breed_facts.each do |fact| %>
     <li><%= fact.fact %></li>
   <% end %>
 </ul>

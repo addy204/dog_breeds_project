@@ -37,9 +37,10 @@ Breed.insert_all(breed_records)
 
 # Fetch Facts for each breed
 Breed.all.each do |breed_record|
+  # Fetch Facts for the Breed (using breed temperament as fact)
   breed_data = breeds_data.find { |b| b['name'] == breed_record.name }
   fact = breed_data['temperament'] || "No temperament information available."
-  BreedFact.find_or_create_by!(breed: breed_record, fact: fact)
+  BreedFact.create!(breed: breed_record, fact: fact)
 end
 
 # Generate Fake Data for Owners and DogShows
