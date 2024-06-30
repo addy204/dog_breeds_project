@@ -1,10 +1,15 @@
-
 <h1>Dog Shows</h1>
+
+<%= form_with(url: dog_shows_path, method: :get, local: true) do %>
+  <%= label_tag :search, "Search Dog Shows" %>
+  <%= text_field_tag :search, params[:search] %>
+  <%= submit_tag "Search" %>
+<% end %>
 
 <%= paginate @dog_shows %>
 
 <ul>
   <% @dog_shows.each do |dog_show| %>
-    <li><%= dog_show.name %> - <%= dog_show.date %></li>
+    <li><%= dog_show.name %></li>
   <% end %>
 </ul>

@@ -1,5 +1,13 @@
 <h1>Breeds</h1>
 
+<%= form_with(url: breeds_path, method: :get, local: true) do %>
+  <%= label_tag :search, "Search Breeds" %>
+  <%= text_field_tag :search, params[:search] %>
+  <%= label_tag :owner_id, "Filter by Owner" %>
+  <%= select_tag :owner_id, options_from_collection_for_select(@owners, :id, :name, params[:owner_id]), include_blank: true %>
+  <%= submit_tag "Search" %>
+<% end %>
+
 <%= paginate @breeds %>
 
 <ul>
