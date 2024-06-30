@@ -1,6 +1,10 @@
+
 <h1>Dog Shows</h1>
+
+<%= paginate @dog_shows %>
+
 <ul>
   <% @dog_shows.each do |dog_show| %>
-    <li><%= link_to dog_show.name, dog_show_path(dog_show) %> - <%= dog_show.date %></li>
+    <li><%= dog_show.name %> - <%= dog_show.date %></li>
   <% end %>
 </ul>

@@ -1,9 +1,8 @@
 class Breed < ApplicationRecord
-  belongs_to :owner, optional: true
   has_many :breed_images
   has_many :breed_facts
-  has_many :breed_dog_shows
-  has_many :dog_shows, through: :breed_dog_shows
+  belongs_to :owner, optional: true
+  has_and_belongs_to_many :dog_shows
 
   validates :name, presence: true, uniqueness: true
 end

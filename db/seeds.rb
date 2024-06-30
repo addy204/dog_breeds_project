@@ -23,32 +23,39 @@ end
 url = 'https://api.thedogapi.com/v1/breeds'
 breeds_data = fetch_data_from_api(url)
 
-breeds_data.each do |breed_data|
-  breed_record = Breed.find_or_create_by!(name: breed_data['name']) do |b|
-    b.sub_breeds = breed_data['bred_for']
-  end
+# Batch insert breeds
+breed_records = breeds_data.map do |breed_data|
+  {
+    name: breed_data['name'],
+    sub_breeds: breed_data['bred_for'],
+    created_at: Time.now,
+    updated_at: Time.now
+  }
+end
 
-  # Fetch Images for the Breed
-  image_url = "https://api.thedogapi.com/v1/images/search?limit=10&breed_ids=#{breed_data['id']}&api_key=#{API_KEY}"
-  image_data = fetch_data_from_api(image_url)
-  image_data.each do |image|
-    BreedImage.find_or_create_by!(breed: breed_record, image_url: image['url'])
-  end
+Breed.insert_all(breed_records)
 
+# Fetch Facts for each breed
+Breed.all.each do |breed_record|
   # Fetch Facts for the Breed (using breed temperament as fact)
+  breed_data = breeds_data.find { |b| b['name'] == breed_record.name }
   fact = breed_data['temperament'] || "No temperament information available."
-  BreedFact.find_or_create_by!(breed: breed_record, fact: fact)
+  BreedFact.create!(breed: breed_record, fact: fact)
 end
 
-# Generate Fake Data for Owners
-10.times do
-  Owner.find_or_create_by!(name: Faker::Name.name)
-end
+# Generate Fake Data for Owners and DogShows
+owners = 10.times.map { { name: Faker::Name.name, created_at: Time.now, updated_at: Time.now } }
+Owner.insert_all(owners)
 
-# Generate Fake Data for DogShows
-10.times do
-  DogShow.find_or_create_by!(name: Faker::Lorem.word, date: Faker::Date.forward(days: 30))
+dog_shows = 10.times.map do
+  {
+    name: Faker::Lorem.word,
+    date: Faker::Date.forward(days: 30),
+    created_at: Time.now,
+    updated_at: Time.now
+  }
 end
+DogShow.insert_all(dog_shows)
 
 # Associate Breeds with Owners and DogShows
 Breed.all.each do |breed|
@@ -58,16 +65,15 @@ end
 
 # Ensuring at least 200 rows are populated
 # Calculate the number of rows already populated
-total_rows = Breed.count + BreedImage.count + BreedFact.count + Owner.count + DogShow.count + BreedDogShow.count
+total_rows = Breed.count + BreedFact.count + Owner.count + DogShow.count + BreedDogShow.count
 
 # Populate additional rows if necessary
 if total_rows < 200
-  additional_breeds_needed = (200 - total_rows) / 3
+  additional_breeds_needed = (200 - total_rows) / 2
 
   additional_breeds_needed.times do
-    breed = Breed.find_or_create_by!(name: Faker::Creature::Dog.breed)
-    BreedImage.find_or_create_by!(breed: breed, image_url: Faker::LoremFlickr.image(size: "640x480", search_terms: ['dog']))
-    BreedFact.find_or_create_by!(breed: breed, fact: Faker::Lorem.sentence)
+    breed = Breed.create!(name: Faker::Creature::Dog.breed)
+    BreedFact.create!(breed: breed, fact: Faker::Lorem.sentence)
   end
 end
 
@@ -85,4 +91,4 @@ DogShow.where(date: nil).find_each do |show|
   show.update(date: Faker::Date.forward(days: 30))
 end
 
-puts "Seeded breeds, images, facts, owners, and dog shows from APIs and Faker"
+puts "Seeded breeds, facts, owners, and dog shows from APIs and Faker"

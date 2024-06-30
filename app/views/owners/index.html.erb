@@ -1,4 +1,8 @@
+
 <h1>Owners</h1>
+
+<%= paginate @owners %>
+
 <ul>
   <% @owners.each do |owner| %>
     <li><%= link_to owner.name, owner_path(owner) %></li>

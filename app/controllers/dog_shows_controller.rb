@@ -1,7 +1,7 @@
-# app/controllers/dog_shows_controller.rb
+
 class DogShowsController < ApplicationController
   def index
-    @dog_shows = DogShow.all
+    @dog_shows = DogShow.page(params[:page]).per(10)
   end
 
   def show

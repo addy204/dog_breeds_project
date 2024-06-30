@@ -1,6 +1,5 @@
 class DogShow < ApplicationRecord
-  has_many :breed_dog_shows
-  has_many :breeds, through: :breed_dog_shows
+  has_and_belongs_to_many :breeds
 
   validates :name, presence: true
   validates :date, presence: true

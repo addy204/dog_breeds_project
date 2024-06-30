@@ -1,7 +1,7 @@
 # app/controllers/breeds_controller.rb
 class BreedsController < ApplicationController
   def index
-    @breeds = Breed.all
+    @breeds = Breed.page(params[:page]).per(10)
   end
 
   def show
@@ -43,6 +43,6 @@ class BreedsController < ApplicationController
   private
 
   def breed_params
-    params.require(:breed).permit(:name, :sub_breeds, :owner_id)
+    params.require(:breed).permit(:name, :sub_breeds)
   end
 end
