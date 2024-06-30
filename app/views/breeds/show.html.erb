@@ -1,12 +1,17 @@
-
 <h1><%= @breed.name %></h1>
-
-<p><strong>Sub-breeds:</strong> <%= @breed.sub_breeds %></p>
+<p><strong>Sub Breeds:</strong> <%= @breed.sub_breeds %></p>
 <p><strong>Owner:</strong> <%= @breed.owner.name if @breed.owner %></p>
-<p><strong>Dog Shows:</strong>
-  <ul>
-    <% @breed.dog_shows.each do |show| %>
-      <li><%= show.name %> - <%= show.date %></li>
-    <% end %>
-  </ul>
-</p>
+
+<h2>Dog Shows</h2>
+<ul>
+  <% @breed.dog_shows.each do |show| %>
+    <li><%= show.name %> on <%= show.date %></li>
+  <% end %>
+</ul>
+
+<h2>Facts</h2>
+<ul>
+  <% @breed.breed_facts.each do |fact| %>
+    <li><%= fact.fact %></li>
+  <% end %>
+</ul>

@@ -1,10 +1,9 @@
-
 <h1><%= @dog_show.name %></h1>
 <p><strong>Date:</strong> <%= @dog_show.date %></p>
 
-<h2>Breeds Participating</h2>
+<h2>Breeds</h2>
 <ul>
   <% @dog_show.breeds.each do |breed| %>
-    <li><%= link_to breed.name, breed_path(breed) %></li>
+    <li><%= breed.name %></li>
   <% end %>
 </ul>
